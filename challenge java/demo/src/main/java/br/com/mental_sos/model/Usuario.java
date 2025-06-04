@@ -8,8 +8,7 @@ import java.util.List;
 @Table(name = "TB_SOS_USUARIO",
        uniqueConstraints = {
            @UniqueConstraint(name = "TB_SOS_USUARIO_UK_USERNAME", columnNames = "username"),
-           @UniqueConstraint(name = "TB_SOS_USUARIO_UK_EMAIL", columnNames = "email"),
-           @UniqueConstraint(name = "TB_SOS_USUARIO_UK_GRUPO_USUARIO", columnNames = "TB_SOS_GRUPO_USUARIO_ID")
+           @UniqueConstraint(name = "TB_SOS_USUARIO_UK_EMAIL", columnNames = "email")
        }
 )
 @Data
@@ -24,9 +23,8 @@ public class Usuario {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "TB_SOS_GRUPO_USUARIO_ID", referencedColumnName = "id", nullable = false, unique = true,
-                foreignKey = @ForeignKey(name = "TB_SOS_USUARIO_GRUPOUSUARIO_FK"))
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
+    @JoinColumn(name = "TB_SOS_GRUPO_USUARIO_ID", referencedColumnName = "id", unique = true, nullable = false)
     private GrupoUsuario grupoUsuario;
 
     @Column(length = 100, nullable = false)
@@ -55,4 +53,12 @@ public class Usuario {
 
     @OneToMany(mappedBy = "administradorOng", cascade = CascadeType.REMOVE)
     private List<Ong> ongsAdministradas;
+
+    // Método helper para facilitar a associação bidirecional
+    public void setGrupoUsuarioAssociado(GrupoUsuario grupoUsuario) {
+        this.grupoUsuario = grupoUsuario;
+        if (grupoUsuario != null && grupoUsuario.getUsuario() != this) {
+            grupoUsuario.setUsuario(this);
+        }
+    }
 }

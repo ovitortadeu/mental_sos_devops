@@ -1,0 +1,31 @@
+// faça um post no /api/usuarios
+{
+  "username": "adminadmin",
+  "email": "adminadmin@gmail.com",
+  "senha": "adminadmin",
+  "tipoGrupo": "ADMIN"
+}
+
+// no auth/login faça login com username e password (a senha) e copie seu token e coloque no authorize
+
+// crie outro usuario PACIENTE ou PSICÓLOGO (CRP deve ter 7 numeros)
+
+{
+  "username": "PACIENTE",
+  "email": "PACIENTE@gmail.com",
+  "senha": "PACIENTE",
+  "tipoGrupo": "PACIENTE"
+}
+
+// tente fazer um get, e execute
+
+// tente alterar o paciente, provavelmente será o id dele será 2
+{
+  "username": "apressado",
+  "email": "apressado@gmail.com",
+  "senha": "apressadinho",
+  "numeroCrp": 0
+}
+
+// e ao final tente deleta-lo, provavelmente id 2
+

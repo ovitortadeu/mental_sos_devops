@@ -1,12 +1,11 @@
 package br.com.mental_sos.model;
 
-import br.com.mental_sos.model.enuns.TipoGrupoUsuario;
+import br.com.mental_sos.model.enuns.TipoGrupoUsuario; // Certifique-se que este enum existe
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "TB_SOS_GRUPO_USUARIO",
-        uniqueConstraints = @UniqueConstraint(name = "TB_SOS_GRUPO_USUARIO_UK_USUARIO", columnNames = "TB_SOS_USUARIO_ID")
+@Table(name = "TB_SOS_GRUPO_USUARIO"
 )
 @Data
 @NoArgsConstructor
@@ -20,9 +19,17 @@ public class GrupoUsuario {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Enumerated(EnumType.ORDINAL) 
     @Column(name = "ID_GRUPO", nullable = false)
-    private TipoGrupoUsuario tipoGrupo;
+    private TipoGrupoUsuario tipoGrupo; 
 
-    @OneToOne(mappedBy = "grupoUsuario", fetch = FetchType.LAZY, optional = false)
+    @OneToOne(mappedBy = "grupoUsuario", fetch = FetchType.LAZY)
     private Usuario usuario;
+
+    public void setUsuarioAssociado(Usuario usuario) {
+        this.usuario = usuario;
+        if (usuario != null && usuario.getGrupoUsuario() != this) {
+            usuario.setGrupoUsuario(this);
+        }
+    }
 }
