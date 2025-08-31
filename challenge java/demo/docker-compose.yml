@@ -1,0 +1,50 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mental-sos-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mentalsos_db
+      SPRING_DATASOURCE_USERNAME: mental_sos_user
+      SPRING_DATASOURCE_PASSWORD: supersecretpassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: NjMyZjY0NjE2ZDY5NjM2ODczNjU2ZTcyNjU3NDJkNmE2ZTc0NmY2ZDY5NmE2ZTQzMzQzMzMyMzEzMTMxMzEzMA==
+      JWT_EXPIRATION: "86400000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    networks:
+      - mental-sos-network
+
+  db:
+    image: postgres:14-alpine
+    container_name: mental-sos-db
+    environment:
+      POSTGRES_DB: mentalsos_db
+      POSTGRES_USER: mental_sos_user
+      POSTGRES_PASSWORD: supersecretpassword
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - mental-sos-network
+
+volumes:
+  db_data:
+
+networks:
+  mental-sos-network:
+    driver: bridge
