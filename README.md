@@ -12,8 +12,6 @@ A versão anterior do Mental SOS operava com uma arquitetura monolítica, onde a
 
 Com o Docker Compose, a arquitetura foi modernizada para um modelo baseado em containers. Cada componente (aplicação e banco de dados) roda em seu próprio container isolado, orquestrados para funcionarem de forma coesa.
 
-![Arquitetura Futura com Docker Compose]
-
 ## 2. Pré-requisitos
 
 *   **Docker Engine:** [Guia de Instalação](https://docs.docker.com/engine/install/)
